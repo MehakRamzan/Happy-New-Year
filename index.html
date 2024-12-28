@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy New Year!</title>
+    <style>
+        /* Full-screen gradient background */
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to bottom, #1e3a8a, #6d28d9, #9333ea);
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        /* Header styles */
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px #000;
+            line-height: 1.2;
+        }
+
+        p{
+            font-size: 1.1em;
+            margin-bottom: 20px;
+            line-height: 30px;
+        }
+
+        /* Content container for mobile-first design */
+        .content {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            width: 90%;
+            margin: 20px;
+            max-width: 400px;
+        }
+
+        /* Input field and button */
+        #birthdate {
+            margin: 15px 0;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            font-size: 1em;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .calculate-button {
+            background: #ff6700;
+            border: none;
+            padding: 12px;
+            color: white;
+            font-size: 1.2em;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .calculate-button:hover {
+            background: #ff4500;
+        }
+
+        /* Result styles */
+        #results {
+            margin-top: 20px;
+            font-size: 1em;
+            line-height: 1.5;
+            word-wrap: break-word;
+        }
+
+        /* Confetti styles */
+        #party-popper {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: randomColor();
+            animation: fall 4s infinite;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="party-popper"></div>
+    <div class="content">
+        <h1>🎉 Happy New Year! <br/> From Mehak</h1>
+        <p>Enter your birthdate to see how long you’ve survived in this world! <br>
+        چلے تو کٹ ہی جائے گا، سفر پر آہستہ آہستہ
+        </p>
+
+        <input type="date" id="birthdate">
+        <button class="calculate-button" onclick="calculateAge()">Calculate</button>
+        <div id="results"></div>
+    </div>
+
+    <script>
+        function randomColor() {
+            const letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+
+        function addConfetti() {
+            const partyPopper = document.getElementById('party-popper');
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.background = randomColor();
+                confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                partyPopper.appendChild(confetti);
+            }
+        }
+
+        function calculateAge() {
+            const birthdate = document.getElementById('birthdate').value;
+            if (!birthdate) {
+                alert('Please select your birthdate!');
+                return;
+            }
+            const birthDate = new Date(birthdate);
+            const now = new Date();
+            const diff = now - birthDate;
+
+            const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
+            const months = Math.floor((diff % (1000 * 60 * 60 * 24 * 365.25)) / (1000 * 60 * 60 * 24 * 30));
+            const days = Math.floor((diff % (1000 * 60 * 60 * 24 * 30)) / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const seconds = Math.floor(diff / 1000);
+
+            document.getElementById('results').innerHTML =
+                `Cheers to surviving for ${years} years, ${months} months, ${days} days, and ${hours} hours, ` +
+                `and a total of ${seconds} seconds in this cruel world! 🎉`;
+        }
+
+        setInterval(() => {
+            if (document.getElementById('birthdate').value) calculateAge();
+        }, 1000);
+
+        addConfetti();
+    </script>
+</body>
+</html>
